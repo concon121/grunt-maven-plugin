@@ -1,0 +1,94 @@
+<script id="register" type="text/html">
+  <form id="regForm" action="#">
+    <fieldset>
+
+      <legend>Register for our service</legend>
+
+      <div class="formRow">
+        <div data-bind="template: {
+                                    name: 'input',
+                                    data: {
+                                      id: 'forename',
+                                      content: 'Forename...',
+                                      required: true,
+                                      binding: $root.forename
+                                    }
+                                  }">
+        </div>
+        <div data-bind="template: {
+                                    name: 'input',
+                                    data: {
+                                      id: 'surname',
+                                      content: 'Surname...',
+                                      required: true,
+                                      binding: $root.surname
+                                    }
+                                  }">
+        </div>
+      </div>
+
+      <div class="formRow">
+
+        <div data-bind="template: {
+                                    name: 'input',
+                                    data: {
+                                      id: 'email',
+                                      content: 'E-Mail...',
+                                      required: true,
+                                      binding: $root.email
+                                    }
+                                  }">
+        </div>
+        <div data-bind="template: {
+                                    name: 'input',
+                                    data: {
+                                      id: 'phone',
+                                      content: 'Phone...',
+                                      required: true,
+                                      binding: $root.phone
+                                    }
+                                  }">
+        </div>
+      </div>
+
+      <div class="formRow">
+
+        <div id="gender" class="formItem">
+
+          <div data-bind="template: {
+                                      name: 'radio',
+                                      data: {
+                                        id: 'male',
+                                        group: 'gender',
+                                        content: 'Male',
+                                        checked: true,
+                                        required: true,
+                                        binding: $root.gender
+                                      }
+                                    }">
+          </div>
+          <div data-bind="template: {
+                                      name: 'radio',
+                                      data: {
+                                        id: 'female',
+                                        group: 'gender',
+                                        content: 'Female',
+                                        checked: false,
+                                        required: true,
+                                        binding: $root.gender
+                                      }
+                                    }">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="formRow">
+        <div data-bind="template: {
+                                    name: 'button', data: {event: $root.completeRegistration}
+                                  }">
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</script>

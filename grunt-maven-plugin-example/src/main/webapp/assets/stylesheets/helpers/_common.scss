@@ -1,0 +1,10 @@
+.hidden {
+	display: none;
+}
+
+.error-message {
+	background-color: $grey3;
+	margin-top: $tinySpacer;
+	padding: $mediumSpacer;
+	color: $red;
+}

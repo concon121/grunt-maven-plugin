@@ -1,0 +1,70 @@
+input,
+textarea {
+	padding: $smallSpacer;
+	color: $col-input-text;
+	border: 1px solid $col-input-border;
+	background: $white;
+	border-radius: 0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea {
+	width: 100%;
+	-webkit-appearance: none;
+
+	@include input-placeholder {
+		color: $col-input-placeholder;
+	}
+
+	&:focus {
+		border: 1px solid $col-input-focus-border;
+		outline: none;
+		box-shadow: 0px 0px 1px 0px $col-input-focus-border;
+	}
+}
+
+.input__optional-text {
+	color: $col-input-optional;
+}
+
+.input--error {
+	border: 1px solid $col-error;
+}
+
+.validation {
+	margin-top: 0;
+	max-width: 75%; /*75% allows for items (eg cahr count) to be placed bottom right of input*/
+
+	&--error {
+		color: $col-error;
+	}
+
+	&--info {
+		color: $col-info;
+	}
+
+	&--char-limit {
+		display: none;
+	}
+}
+
+textarea {
+	min-height: $jumboSpacer;
+}
+
+label.checkbox,
+label.radio {
+	display: inline-block;
+}
+
+.input__icon {
+	position: relative;
+	top: -36px;
+	margin-bottom: -$defaultIconSize;
+	right: $smallSpacer;
+	float: right;
+	color: $col-input-icon;
+	pointer-events: none;
+}

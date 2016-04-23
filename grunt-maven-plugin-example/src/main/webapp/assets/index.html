@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="public/css/main.css" rel="stylesheet" type="text/css">
+        <script src="public/registration.thirdparty.js"></script>
+    </head>
+    <body>
+        <h1>Example Knockout JS Application</h1>
+
+        <div data-bind="with: displayForm">
+          <div class="form form--max" data-bind="template: {name: 'register'}">
+            <!-- Knockout goes here -->
+          </div>
+        </div>
+
+        <div data-bind="with: registrationData">
+          <div class="form form--max" data-bind="template: {name: 'complete'}">
+            <!-- Knockout goes here -->
+          </div>
+        </div>
+
+        <div id="templates"></div>
+        <script src="public/registration.app.js"></script>
+    </body>
+</htm

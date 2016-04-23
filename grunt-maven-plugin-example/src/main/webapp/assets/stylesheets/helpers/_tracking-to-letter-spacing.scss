@@ -1,0 +1,4 @@
+/* convert psd tracking value to letter spacing value*/
+@function psdTrackingToLetterSpacing($trackingValue) {
+	@return  $trackingValue/1000 * 1em; /* we want to use ems here as text can overlap when zoomed in if set to px*/
+}

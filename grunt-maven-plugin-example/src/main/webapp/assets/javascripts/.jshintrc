@@ -1,0 +1,17 @@
+{
+     "validthis": true
+   , "laxcomma" : true
+   , "laxbreak" : true
+   , "browser"  : true
+   , "eqnull"   : false//supress warnings about ==null comparisons which then can test for if a var is 'undefined' or 'null'
+   , "debug"    : false
+   , "devel"    : true
+   , "boss"     : false//suppress warnings about assignments where not expected. see http://www.jshint.com/docs/options/#relaxing-options
+   , "expr"     : true
+   , "asi"      : false//suppress warnings about missing semicolons              see http://www.jshint.com/docs/options/#relaxing-options
+   , "smarttabs": true
+   , "white"    : false// indent errors "messy white space"
+   , "eqeqeq"   : true//  warn about unsafe comparisons
+   , "jquery"   : true
+//   , "strict"   : true//  warn when code is not in strict mode
+}

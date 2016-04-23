@@ -1,0 +1,11 @@
+<script id="radio" type="text/html">
+  <label data-bind="attr: {'for': id}">
+    <input type="radio" data-bind="attr: {'id': id, 'name': group, 'value': id}, checked: binding"/>
+    <div class="radio-button__display">
+      <span class="radio-button__outer">
+        <span class="radio-button__inner"></span>
+      </span>
+      <span class="radio-pods__item__text" data-bind="text: content"></span>
+    </div>
+  </label>
+</script>
