@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.cbr.software.grunt_runner.exception.SubProcessException;
+import net.cbr.software.grunt_runner.python.PythonGruntRunner;
+import net.cbr.software.grunt_runner.python.PythonGruntRunnerBuilder;
 import net.cbr.software.grunt_runner.utils.JsonHelper;
 
 public class PythonGruntRunnerTest {
