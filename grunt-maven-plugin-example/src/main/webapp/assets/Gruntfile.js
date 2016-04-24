@@ -87,6 +87,6 @@ module.exports = function (grunt) {
     grunt.registerTask('dist', ['clean', 'dist-css', 'dist-js']);
 
     // Default task.
-    grunt.registerTask('default', ['dist', 'json_generator']);
+    grunt.registerTask('default', ['dist']);
 
 };
