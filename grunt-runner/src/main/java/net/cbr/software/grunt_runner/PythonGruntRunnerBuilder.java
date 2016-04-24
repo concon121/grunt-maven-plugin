@@ -1,18 +1,27 @@
 package net.cbr.software.grunt_runner;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 
+import net.cbr.software.grunt_runner.exception.SubProcessException;
+
 public class PythonGruntRunnerBuilder implements GruntRunnerBuilder {
 
+	private static final String GRUNT_FILE = "Gruntfile.js";
+	
 	private String installation;
 	private File workingDirectory;
 	private Log log;
 	private Map<String, String> reqs;
 
-	public PythonGruntRunnerBuilder(String installation) {
+	public static GruntRunnerBuilder newInstance(String installation) {
+		return new PythonGruntRunnerBuilder(installation);
+	}
+	
+	private PythonGruntRunnerBuilder(String installation) {
 		this.installation = installation;
 	}
 
@@ -31,11 +40,20 @@ public class PythonGruntRunnerBuilder implements GruntRunnerBuilder {
 		return this;
 	}
 
-	public GruntRunner run() {
+	public GruntRunner run() throws IOException, InterruptedException, SubProcessException {
 
 		GruntRunner runner = new PythonGruntRunner(this);
 		runner.run();
 		return runner;
+		
+	}
+	
+	public String getWorkingPath() {
+		return getWorkingDirectory().getAbsolutePath();
+	}
+	
+	public String getGruntFile() {
+		return getWorkingPath() + File.separator + GRUNT_FILE;
 	}
 
 	public String getInstallation() {

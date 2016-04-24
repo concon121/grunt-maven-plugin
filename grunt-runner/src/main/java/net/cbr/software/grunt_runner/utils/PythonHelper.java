@@ -37,6 +37,14 @@ public class PythonHelper {
 	}
 
 	public static int execPythonScript(Log log, String script, String... args) throws IOException, InterruptedException {
+		ProcessBuilder builder = new ProcessBuilder(aggregateArguments(script, args));
+		Process process = builder.start();
+		process.waitFor();
+		logProcessOutput(process, log);
+		return process.exitValue();
+	}
+	
+	private static List<String> aggregateArguments(String script, String... args) {
 		
 		List<String> arguments = new ArrayList<String>();
 		arguments.add(PYTHON);
@@ -46,14 +54,11 @@ public class PythonHelper {
 			arguments.add(arg);
 		}
 		
-		ProcessBuilder builder = new ProcessBuilder(arguments);
-		Process process = builder.start();
-		process.waitFor();
-		logProcess(process, log);
-		return process.exitValue();
+		return arguments;
+		
 	}
 
-	private static void logProcess(Process process, Log log) {
+	private static void logProcessOutput(Process process, Log log) {
 		Scanner scanner = new Scanner(process.getInputStream());
 		Scanner error = new Scanner(process.getErrorStream());
 

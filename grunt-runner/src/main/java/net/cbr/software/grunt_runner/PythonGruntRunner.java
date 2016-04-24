@@ -1,58 +1,54 @@
 package net.cbr.software.grunt_runner;
 
+import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.GRUNT_CHECK_FAILED;
+import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.PACKAGE_CHECK_FAILED;
+import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.PREREQ_CHECK_FAILED;
+import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.WORKING_DIRECTORY_CHECK_FAILED;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.maven.plugin.MojoExecutionException;
-
+import net.cbr.software.grunt_runner.exception.SubProcessException;
 import net.cbr.software.grunt_runner.utils.JsonHelper;
 import net.cbr.software.grunt_runner.utils.PythonHelper;
 
 public class PythonGruntRunner implements GruntRunner {
-	
-	private static final int NORMAL_EXIT = 0;
-	private static final String PREREQ_CHECK_FAILED = "Prerequisite check failed.  Please ensure all necessary libraries are installed.";
-	private static final String WORKING_DIRECTORY_CHECK_FAILED = "Working directory does not exist.";
-	private static final String PACKAGE_CHECK_FAILED = "package.json does not exist.";
-	private static final String GRUNT_CHECK_FAILED = "Gruntfile does not exist.";
 
+	public static final int NORMAL_EXIT = 0;
+	public static final int ERROR_EXIT = 1;
+	
 	private static String packageJSONName = "package";
 	private static String gruntFileName = "Gruntfile";
-	
+
 	private GruntRunnerBuilder builder;
-	
+	private int exitCode = NORMAL_EXIT;
+
 	public PythonGruntRunner(GruntRunnerBuilder builder) {
 		this.builder = builder;
 	}
 
-	private void grunt() throws IOException, InterruptedException, MojoExecutionException {
-		String grunt = PythonHelper.getPythonScript("grunt.py");
-		int exit = PythonHelper.execPythonScript(getBuilder().getLog(), grunt, getBuilder().getWorkingDirectory().getAbsolutePath(),
-				getBuilder().getWorkingDirectory().getAbsolutePath() + File.separator + "Gruntfile.js");
+	public GruntRunner run() throws IOException, InterruptedException, SubProcessException {
 
-		if (exit != NORMAL_EXIT) {
-			throw new MojoExecutionException(PREREQ_CHECK_FAILED);
-		}
+		checkWorkingDirectory();
+
+		exec("verify.py", PREREQ_CHECK_FAILED, JsonHelper.toJSON(getBuilder().getReqs()));
+		exec("install.py", getBuilder().getWorkingPath());
+		exec("grunt.py", getBuilder().getWorkingPath(), getBuilder().getGruntFile());
+
+		return this;
 	}
 
-	private void install() throws IOException, InterruptedException, MojoExecutionException {
-		String install = PythonHelper.getPythonScript("install.py");
-		int exit = PythonHelper.execPythonScript(getBuilder().getLog(), install, getBuilder().getWorkingDirectory().getAbsolutePath());
-
-		if (exit != NORMAL_EXIT) {
-			throw new MojoExecutionException(PREREQ_CHECK_FAILED);
-		}
-	}
-
-	private void checkWorkingDirectory() throws MojoExecutionException {
-		System.out.println("The working directory is : " + getBuilder().getWorkingDirectory().getAbsolutePath());
+	private void checkWorkingDirectory() throws FileNotFoundException {
+		
 		boolean packageJSON = false;
 		boolean gruntFile = false;
 
 		File workingDirectory = getBuilder().getWorkingDirectory();
-		
+
 		if (!workingDirectory.exists()) {
-			throw new MojoExecutionException(WORKING_DIRECTORY_CHECK_FAILED);
+			exitCode = ERROR_EXIT;
+			throw new FileNotFoundException(WORKING_DIRECTORY_CHECK_FAILED);
 		} else {
 			for (String file : workingDirectory.list()) {
 				if (file.toUpperCase().startsWith(packageJSONName.toUpperCase())) {
@@ -65,27 +61,28 @@ public class PythonGruntRunner implements GruntRunner {
 		}
 
 		if (!packageJSON) {
-			throw new MojoExecutionException(PACKAGE_CHECK_FAILED);
+			exitCode = ERROR_EXIT;
+			throw new FileNotFoundException(PACKAGE_CHECK_FAILED);
 		}
 		if (!gruntFile) {
-			throw new MojoExecutionException(GRUNT_CHECK_FAILED);
+			exitCode = ERROR_EXIT;
+			throw new FileNotFoundException(GRUNT_CHECK_FAILED);
 		}
 	}
 
-	protected void checkPreReqs() throws MojoExecutionException, IOException, InterruptedException {
+	protected void exec(String script, String errorMessage, String... param) throws IOException, InterruptedException, SubProcessException {
 
-		String verify = PythonHelper.getPythonScript("verify.py");
-		int exit = PythonHelper.execPythonScript(getBuilder().getLog(), verify, JsonHelper.toJSON(getBuilder().getReqs()));
+		int exit = PythonHelper.execPythonScript(getBuilder().getLog(), PythonHelper.getPythonScript(script), param);
 
 		if (exit != NORMAL_EXIT) {
-			throw new MojoExecutionException(PREREQ_CHECK_FAILED);
+			exitCode = ERROR_EXIT;
+			throw new SubProcessException(errorMessage);
 		}
 
 	}
-
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	
+	public int getLastExitCode() {
+		return exitCode;
 	}
 
 	public GruntRunnerBuilder getBuilder() {
@@ -95,6 +92,5 @@ public class PythonGruntRunner implements GruntRunner {
 	public void setBuilder(GruntRunnerBuilder builder) {
 		this.builder = builder;
 	}
-	
-	
+
 }
