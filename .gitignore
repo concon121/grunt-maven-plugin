@@ -1,6 +1,8 @@
 grunt-maven-plugin-example/src/main/webapp/assets/node_modules
+grunt-maven-plugin/.settings/
 **/node_modules
 **/target
 **/.settings
+**/.settings/
 **/.classpath
 **/.project
