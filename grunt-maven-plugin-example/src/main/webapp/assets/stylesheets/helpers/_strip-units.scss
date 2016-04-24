@@ -1,4 +1,0 @@
-/*strip units from a number*/
-@function strip-units($number) {
-	@return $number / ($number * 0 + 1);
-}

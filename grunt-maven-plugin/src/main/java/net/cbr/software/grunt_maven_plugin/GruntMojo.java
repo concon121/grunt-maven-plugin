@@ -1,6 +1,7 @@
 package net.cbr.software.grunt_maven_plugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -9,8 +10,9 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import net.cbr.software.grunt_runner.GruntRunner;
-import net.cbr.software.grunt_runner.PythonGruntRunnerBuilder;
+import net.cbr.software.grunt_runner.GruntFileExtension;
+import net.cbr.software.grunt_runner.exception.SubProcessException;
+import net.cbr.software.grunt_runner.python.PythonGruntRunnerBuilder;
 
 @Mojo(name = "grunt", defaultPhase = LifecyclePhase.COMPILE)
 public class GruntMojo extends AbstractMojo {
@@ -21,11 +23,24 @@ public class GruntMojo extends AbstractMojo {
 	private Map<String, String> prereqs;
 	@Parameter(property = "pythonInstallation", required = true)
 	private String pythonInstallation;
+	@Parameter(property = "gruntFileExtension", required = false)
+	private GruntFileExtension gruntFileExtension;
 
 	public void execute() throws MojoExecutionException {
 
-		GruntRunner runner = new PythonGruntRunnerBuilder(pythonInstallation).in(workingDirectory)
-				.with(prereqs).with(getLog()).run();
+		try {
+			if (gruntFileExtension == null) {
+				gruntFileExtension = GruntFileExtension.JS;
+			}
+			PythonGruntRunnerBuilder.newInstance(pythonInstallation).in(workingDirectory)
+					.with(prereqs).with(gruntFileExtension).with(getLog()).run();
+		} catch (IOException e) {
+			throw new MojoExecutionException(e.getMessage());
+		} catch (InterruptedException e) {
+			throw new MojoExecutionException(e.getMessage());
+		} catch (SubProcessException e) {
+			throw new MojoExecutionException(e.getMessage());
+		}
 
 	}
 
@@ -51,6 +66,14 @@ public class GruntMojo extends AbstractMojo {
 
 	public void setPythonInstallation(String pythonInstallation) {
 		this.pythonInstallation = pythonInstallation;
+	}
+
+	public GruntFileExtension getGruntFileExtension() {
+		return gruntFileExtension;
+	}
+
+	public void setGruntFileExtension(GruntFileExtension gruntFileExtension) {
+		this.gruntFileExtension = gruntFileExtension;
 	}
 
 }
