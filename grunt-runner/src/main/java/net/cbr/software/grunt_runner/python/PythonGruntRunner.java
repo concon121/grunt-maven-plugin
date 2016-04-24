@@ -1,6 +1,6 @@
 package net.cbr.software.grunt_runner.python;
 
-import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.PREREQ_CHECK_FAILED;
+import static net.cbr.software.grunt_runner.exception.GruntRunnerExceptionMessages.*;
 
 import java.io.IOException;
 
@@ -23,8 +23,8 @@ public class PythonGruntRunner extends AbstractGruntRunner {
 		checkWorkingDirectory();
 
 		exec("verify.py", PREREQ_CHECK_FAILED, JsonHelper.toJSON(getBuilder().getReqs()));
-		exec("install.py", getBuilder().getWorkingPath());
-		exec("grunt.py", getBuilder().getWorkingPath(), getBuilder().getGruntFile());
+		exec("install.py", INSTALLATION_FAILED, getBuilder().getWorkingPath());
+		exec("grunt.py", GRUNT_FAILED, getBuilder().getWorkingPath(), getBuilder().getGruntFile());
 
 		return this;
 	}
