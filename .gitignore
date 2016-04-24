@@ -6,3 +6,5 @@ grunt-maven-plugin/.settings/
 **/.settings/
 **/.classpath
 **/.project
+grunt-maven-plugin/.classpath
+grunt-maven-plugin/.settings/org.eclipse.core.resources.prefs
