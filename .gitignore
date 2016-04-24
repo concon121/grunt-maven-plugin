@@ -8,3 +8,4 @@ grunt-maven-plugin/.settings/
 **/.project
 grunt-maven-plugin/.classpath
 grunt-maven-plugin/.settings/org.eclipse.core.resources.prefs
+grunt-maven-plugin/cachedir
