@@ -33,6 +33,7 @@
 								<compass>--version</compass>
 								<node>--version</node>
 							</prereqs>
+							<gruntFileExtension>JS</gruntFileExtension>
 						</configuration>
 					</execution>
 				</executions>
