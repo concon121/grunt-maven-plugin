@@ -10,31 +10,9 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jqueryCheck: 'if (typeof jQuery === "undefined") { throw new Error("Build here requires jQuery") }\n\n',
 
-        jshint: {
-            options: {
-                jshintrc: 'javascripts/.jshintrc'
-            }, gruntfile: {
-                src: 'Gruntfile.js'
-            }, src: {
-                src: [
-                    '!javascripts/thirdparty/*.js',
-                    'javascripts/models/*.js',
-                    'javascripts/helpers/*.js',
-                    'javascripts/*.js'
-                ]
-            }
-        },
-
         concat: {
             options: {
                 stripBanners: false
-            },
-            app: {
-                src: [
-                    'javascripts/helpers/*.js',
-                    'javascripts/models/*.js'
-                ],
-                dest: 'public/registration.app.js'
             },
             thirdparty: {
                 src: [
@@ -45,17 +23,6 @@ module.exports = function (grunt) {
                   'javascripts/thirdparty/knockout.validation.min.js'
                 ],
                 dest: 'public/registration.thirdparty.js'
-            },
-            templates: {
-              src: [
-                'javascripts/views/registrationComplete.html',
-                'javascripts/views/registrationForm.html',
-                'javascripts/views/partials/button.html',
-                'javascripts/views/partials/input.html',
-                'javascripts/views/partials/radio.html',
-
-              ],
-              dest: 'public/templates.html'
             }
 
         }, uglify: {
@@ -65,7 +32,7 @@ module.exports = function (grunt) {
                     beautify: false, indent_level: 2, space_colon: false
                     , ascii_only: true, quote_keys: true
                 }, preserveComments: false
-            }, 'public/registration.min.js': ['<%= concat.thirdparty.dest %>', '<%= concat.app.dest %>']
+            }, 'public/thirdparty.min.js': ['<%= concat.thirdparty.dest %>']
         },
 
         // cleanup in the public dir
@@ -87,15 +54,6 @@ module.exports = function (grunt) {
                 src: [
                     'public/css/**/*.css'
                 ]
-            }
-        },
-
-        json_generator: {
-            target: {
-                dest: "version.json",
-                options: {
-                    version: "1.0.0"
-                }
             }
         },
 
@@ -129,6 +87,6 @@ module.exports = function (grunt) {
     grunt.registerTask('dist', ['clean', 'dist-css', 'dist-js']);
 
     // Default task.
-    grunt.registerTask('default', ['jshint', 'dist', 'json_generator']);
+    grunt.registerTask('default', ['dist', 'json_generator']);
 
 };
