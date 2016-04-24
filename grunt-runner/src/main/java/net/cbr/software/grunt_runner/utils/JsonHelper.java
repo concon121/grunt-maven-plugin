@@ -1,4 +1,4 @@
-package net.cbr.software.grunt_maven_plugin.utils;
+package net.cbr.software.grunt_runner.utils;
 
 import java.util.Map;
 import java.util.Set;
