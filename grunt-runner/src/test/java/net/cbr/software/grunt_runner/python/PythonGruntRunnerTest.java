@@ -1,6 +1,6 @@
-package net.cbr.software.grunt_runner;
+package net.cbr.software.grunt_runner.python;
 
-import static net.cbr.software.grunt_runner.PythonGruntRunner.NORMAL_EXIT;
+import static net.cbr.software.grunt_runner.AbstractGruntRunner.NORMAL_EXIT;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
